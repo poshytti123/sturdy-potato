@@ -13,6 +13,23 @@ def get_db():
     return db
 
 
+def migrate_if_not_exists(version):
+    with app.app_context():
+        conn = get_db()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("SELECT id FROM migration WHERE id=?", (version,))
+            migration_exists = cursor.fetchone() is not None
+        except sqlite3.OperationalError:
+            # If the alembic_version table does not exist, the migration has not been run.
+            migration_exists = False
+        finally:
+            cursor.close()
+            conn.close()
+        if not migration_exists:
+            print(f"Running migration {version}")
+            init_db();
 def init_db():
     with app.app_context():
         db = get_db()
@@ -119,5 +136,6 @@ def logout():
     return resp
 
 if __name__ == '__main__':
-    init_db()
+    #init_db()
+    migrate_if_not_exists(1);
     app.run(host="0.0.0.0", port=8080, debug=True)
