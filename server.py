@@ -73,8 +73,33 @@ def get_all_airports(db):
     return cursor.fetchall()
 
 
-def get_all_flights(db, from_airport, to_aitport, date):
-    cursor = db.execute("SELECT * FROM flights WHERE from_airport = ? and to_airport = ?  and date(departure) = date(?)", (from_airport, to_aitport, date))
+def get_all_flights(db, from_airport, to_airport, date):
+    #cursor = db.execute("SELECT * FROM flights WHERE from_airport = ? and to_airport = ?  and date(departure) = date(?)", (from_airport, to_airport, date))
+    cursor = db.execute("""
+    SELECT
+    f.id,
+    f.from_airport,
+    f.to_airport,
+    f.departure,
+    f.arrival,
+    f.available_tickets - COALESCE(SUM(b.tickets_count), 0)
+    AS
+    available_tickets
+FROM
+flights
+f
+LEFT
+JOIN
+booking
+b
+ON
+f.id = b.flight_id
+AND
+b.booking_status = 1
+WHERE
+f.from_airport = ? and f.to_airport = ? and date(f.departure) = date(?)
+GROUP BY f.id, f.from_airport, f.to_airport, f.departure, f.arrival, f.available_tickets
+""", (from_airport, to_airport, date));
     return cursor.fetchall()
 
 def create_booking(db, flight_id, user_id, tickets_count):
