@@ -34,6 +34,11 @@ INSERT INTO airports (code,name) VALUES ("IST", "Istanbul");
 
 
 INSERT INTO flights (from_airport, to_airport, departure, arrival, available_tickets)
-VALUES ( "SVX", "IST", "2024-11-01 20:34", "2024-11-01 22:34", 10);
-
+VALUES ( "SVX", "IST", "2024-06-14 20:34", "2024-06-14 22:34", 10);
+INSERT INTO flights (from_airport, to_airport, departure, arrival, available_tickets)
+VALUES ( "SVX", "IST", "2024-06-14 21:34", "2024-06-14 22:34", 10);
+INSERT INTO flights (from_airport, to_airport, departure, arrival, available_tickets)
+VALUES ( "SVX", "IST", "2024-06-15 06:34", "2024-06-15 22:34", 10);
+INSERT INTO flights (from_airport, to_airport, departure, arrival, available_tickets)
+VALUES ( "SVX", "IST", "2024-06-16 20:34", "2024-06-16 22:34", 10);
 INSERT INTO migration (id) VALUES (1);

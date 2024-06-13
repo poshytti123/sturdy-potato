@@ -65,6 +65,15 @@ def check_if_user_exists(db, username):
     return cursor.fetchall()
 
 
+def get_all_airports(db):
+    cursor = db.execute("SELECT * FROM airports")
+    return cursor.fetchall()
+
+
+def get_all_flights(db, from_airport, to_aitport, date):
+    cursor = db.execute("SELECT * FROM flights WHERE from_airport = ? and to_airport = ?", (from_airport, to_aitport))
+    return cursor.fetchall()
+
 def sign_in(db, username, password):
     cursor = db.execute("SELECT * FROM users WHERE username = ? and password = ? ", (username, password, ))
     return cursor.fetchall()
@@ -134,6 +143,32 @@ def logout():
     resp =  make_response(render_template('login.html'), 200)
     resp.set_cookie('username', '')
     return resp
+
+
+@app.route('/search', methods=['GET'])
+def search_view():
+    db = get_db()
+    ap = get_all_airports(db)
+    print(f"Airports: {ap}")
+    from_airport  = request.args.get('from_airport', '')
+    to_airport = request.args.get('to_airport', '')
+    date = request.args.get('date', '')
+    print(from_airport, to_airport, date)
+    if(from_airport != '' and to_airport != '' and date != ''):
+        flights = get_all_flights(db,from_airport, to_airport, date)
+        print(flights)
+    else:
+        flights = []
+    return render_template('search.html'
+                           , from_airport = ap
+                           , to_airport = ap
+                           , date = date
+                           , selected_from_airport = from_airport
+                           , selected_to_airport = to_airport
+                           , flights = flights
+                           )
+
+
 
 if __name__ == '__main__':
     #init_db()
