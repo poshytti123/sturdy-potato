@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS booking (
     user_id INTEGER,
     flight_id INTEGER,
     booking_status INTEGER,
+    tickets_count INTEGER,
     CONSTRAINT flight_fk FOREIGN KEY (flight_id)  REFERENCES flights (id),
     CONSTRAINT user_fk FOREIGN KEY (user_id)  REFERENCES users (id)
 );
@@ -41,4 +42,7 @@ INSERT INTO flights (from_airport, to_airport, departure, arrival, available_tic
 VALUES ( "SVX", "IST", "2024-06-15 06:34", "2024-06-15 22:34", 10);
 INSERT INTO flights (from_airport, to_airport, departure, arrival, available_tickets)
 VALUES ( "SVX", "IST", "2024-06-16 20:34", "2024-06-16 22:34", 10);
+
+INSERT INTO users (username, password) VALUES ("aaaa","123");
+
 INSERT INTO migration (id) VALUES (1);

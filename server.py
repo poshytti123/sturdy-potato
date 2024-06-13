@@ -1,4 +1,4 @@
-from flask import Flask, request, g, render_template, make_response
+from flask import Flask, request, g, render_template, make_response,  abort, redirect, url_for
 
 import sqlite3
 import os
@@ -64,6 +64,9 @@ def check_if_user_exists(db, username):
     cursor = db.execute("SELECT * FROM users WHERE username = ? ", (username,))
     return cursor.fetchall()
 
+def get_user_id(db, username):
+    cursor = db.execute("SELECT id FROM users WHERE username = ? ", (username,))
+    return cursor.fetchone()[0]
 
 def get_all_airports(db):
     cursor = db.execute("SELECT * FROM airports")
@@ -73,6 +76,12 @@ def get_all_airports(db):
 def get_all_flights(db, from_airport, to_aitport, date):
     cursor = db.execute("SELECT * FROM flights WHERE from_airport = ? and to_airport = ?", (from_airport, to_aitport))
     return cursor.fetchall()
+
+def create_booking(db, flight_id, user_id, tickets_count):
+    print(flight_id, user_id, tickets_count)
+    db.execute("INSERT INTO booking (user_id,flight_id,booking_status,tickets_count) VALUES (?,?,?,?)" , (user_id, flight_id, 1, tickets_count))
+    db.commit()
+
 
 def sign_in(db, username, password):
     cursor = db.execute("SELECT * FROM users WHERE username = ? and password = ? ", (username, password, ))
@@ -101,9 +110,9 @@ def register():
 
     db.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
     db.commit()
-    
-    return render_template('user_created.html')
-
+    resp = make_response(render_template('user_created.html'), 200)
+    resp.set_cookie('username', request.form['username'])
+    return resp
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -147,7 +156,10 @@ def logout():
 
 @app.route('/search', methods=['GET'])
 def search_view():
+    username = request.cookies.get('username')
+
     db = get_db()
+
     ap = get_all_airports(db)
     print(f"Airports: {ap}")
     from_airport  = request.args.get('from_airport', '')
@@ -167,6 +179,28 @@ def search_view():
                            , selected_to_airport = to_airport
                            , flights = flights
                            )
+
+
+
+@app.route('/book', methods=['GET'])
+def book_view():
+    username = request.cookies.get('username')
+    if username == '' or username == None:
+        print('cookie was empty')
+        return redirect(url_for('login'))
+    else:
+        db = get_db()
+        user_id = get_user_id(db,username)
+        if user_id == 0 or user_id == None:
+            print('user_id was empty')
+            return redirect(url_for('login'))
+        flight_id = request.args.get('flight_id', '')
+        tickets_count = request.args.get('tickets_count', 1)
+        if flight_id == '' or flight_id == None:
+            return redirect(url_for('search'))
+        create_booking(db,flight_id,user_id, tickets_count)
+        return render_template('book.html'
+                               )
 
 
 
