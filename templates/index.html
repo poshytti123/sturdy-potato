@@ -104,12 +104,12 @@
             <a href="login" class="btn btn-secondary mx-2">Войти</a>
         </div>
     </header>
-    <div class="main" style="background-image: url('https://images5.alphacoders.com/479/479484.jpg');">
+    <div class="main" style="background-image: url({{ url_for('static', filename='images/background.jpg')}})">
         <div class="main-content">
             <h1>TICKET FINDER</h1>
             <p>Это ваш надежный помощник в поиске и бронировании самых выгодных авиабилетов напрямую от авиакомпаний, агентств и онлайн платформ.</p>
                 <p>Сравнивайте цены, выбирайте удобные маршруты и экономьте время и деньги с Ticket Finder!</p>
-            <a href="/#" class="btn-book">Найти билет</a>
+            <a href="/search" class="btn-book">Найти билет</a>
         </div>
     </div>
     <footer>
