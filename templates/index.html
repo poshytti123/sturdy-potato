@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Home{% endblock %} - FlaskApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0;
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        footer {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid #eaeaea;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            padding: 1rem;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .main {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        .main-content {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 550px;
+            color: white;
+            text-align: left;
+        }
+        .main-content h1 {
+            font-size: 2.6rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .main-content p {
+            font-size: 1.5rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        .main-content .btn-book {
+            background-color: rgba(255, 255, 255, 1);
+            color: black;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .main-content .btn-book:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        .btn-book {
+            display: block;
+            width: 200px; 
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 50px;">
+        </div>
+        <div>
+            <a href="register" class="btn btn-primary mx-2">Создать аккаунт</a>
+            <a href="login" class="btn btn-secondary mx-2">Войти</a>
+        </div>
+    </header>
+    <div class="main" style="background-image: url('https://images5.alphacoders.com/479/479484.jpg');">
+        <div class="main-content">
+            <h1>TICKET FINDER</h1>
+            <p>Это ваш надежный помощник в поиске и бронировании самых выгодных авиабилетов напрямую от авиакомпаний, агентств и онлайн платформ.</p>
+                <p>Сравнивайте цены, выбирайте удобные маршруты и экономьте время и деньги с Ticket Finder!</p>
+            <a href="/#" class="btn-book">Найти билет</a>
+        </div>
+    </div>
+    <footer>
+        <a href="/info" class="mt-2 font-bold">Информация</a>
+        <p class="mt-2">© 2024 Все права защищены</p>
+    </footer>
+</body>
+</html>
